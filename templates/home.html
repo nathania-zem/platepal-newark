@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="container my-5">
+  <div class="row align-items-center g-0">
+    <div class="col-md-6 about-text-col">
+      <h2 class="about-title">About Us</h2>
+      <p class="about-text mt-3">
+        PlatePal Newark is your go-to guide for discovering the best local
+        restaurants in the Newark area. We connect food lovers with hidden gems,
+        popular spots, and everything in between. Whether you're a student near
+        NJIT, a Rutgers Newark local, or just passing through, we help you find
+        your next favorite meal and support the small businesses that make
+        Newark's food scene one of a kind.
+      </p>
+      <ul class="about-list">
+        <li>Discover local Newark restaurants</li>
+        <li>Read and leave real reviews</li>
+        <li>Support small businesses</li>
+        <li>Find hidden gems near NJIT</li>
+      </ul>
+    </div>
+    <div class="col-md-6 about-img-col">
+      <img src="{% static 'images/newark.jpg' %}" alt="Newark NJ" class="about-img">
+    </div>
+  </div>
+</section>
+<!-- Featured Restaurants -->
+<section class="container my-5">
+  <h2 class="text-center featured-title">Featured Restaurants</h2>
+  <div class="row mt-4 g-3">
+
+    <!-- Card 1 -->
+    <div class="col-md-4">
+      <div class="restaurant-card">
+        <img src="{% static 'images/burger_walla.jpg' %}" alt="Burger Walla" class="card-bg-img">
+        <div class="card-overlay">
+          <div class="card-top">
+            <span class="card-name">Burger Walla</span>
+            <span class="card-stars">★★★★☆</span>
+          </div>
+          <ul class="card-info">
+            <li>Indian Fusion</li>
+            <li>Burgers, Wraps</li>
+            <li>$$ </li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-buttons mt-2">
+        <button class="btn btn-rate" data-bs-toggle="modal" data-bs-target="#rateModal1">Rate</button>
+        <button class="btn btn-feedback" data-bs-toggle="modal" data-bs-target="#feedbackModal1">Feedback</button>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="col-md-4">
+      <div class="restaurant-card">
+        <img src="{% static 'images/intrinsic_cafe.jpg' %}" alt="Intrinsic Cafe" class="card-bg-img">
+        <div class="card-overlay">
+          <div class="card-top">
+            <span class="card-name">Intrinsic Cafe</span>
+            <span class="card-stars">★★★★☆</span>
+          </div>
+          <ul class="card-info">
+            <li>Vegan</li>
+            <li>Bowls, Smoothies</li>
+            <li>$$</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-buttons mt-2">
+        <button class="btn btn-rate" data-bs-toggle="modal" data-bs-target="#rateModal2">Rate</button>
+        <button class="btn btn-feedback" data-bs-toggle="modal" data-bs-target="#feedbackModal2">Feedback</button>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="col-md-4">
+      <div class="restaurant-card">
+        <img src="{% static 'images/fresh_coast.jpg' %}" alt="Fresh Coast" class="card-bg-img">
+        <div class="card-overlay">
+          <div class="card-top">
+            <span class="card-name">Fresh Coast Kitchen</span>
+            <span class="card-stars">★★★★☆</span>
+          </div>
+          <ul class="card-info">
+            <li>Healthy</li>
+            <li>Bowls, Salads</li>
+            <li>$$</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-buttons mt-2">
+        <button class="btn btn-rate" data-bs-toggle="modal" data-bs-target="#rateModal3">Rate</button>
+        <button class="btn btn-feedback" data-bs-toggle="modal" data-bs-target="#feedbackModal3">Feedback</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
