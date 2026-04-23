@@ -3,47 +3,22 @@
 {% block content %}
 
 <section class="container my-5">
-  <div class="row align-items-center g-0">
-    <div class="col-md-6 about-text-col">
-      <h2 class="about-title">About Us</h2>
-      <p class="about-text mt-3">
-        PlatePal Newark is your go-to guide for discovering the best local
-        restaurants in the Newark area. We connect food lovers with hidden gems,
-        popular spots, and everything in between. Whether you're a student near
-        NJIT, a Rutgers Newark local, or just passing through, we help you find
-        your next favorite meal and support the small businesses that make
-        Newark's food scene one of a kind.
-      </p>
-      <ul class="about-list">
-        <li>Discover local Newark restaurants</li>
-        <li>Read and leave real reviews</li>
-        <li>Support small businesses</li>
-        <li>Find hidden gems near NJIT</li>
-      </ul>
-    </div>
-    <div class="col-md-3 about-img-col">
-      <img src="{% static 'images/newark1.jpg' %}" alt="Newark NJ" class="about-img">
-    </div>
-  </div>
-</section>
-<!-- Featured Restaurants -->
-<section class="container my-5">
-  <h2 class="text-center featured-title">Featured Restaurants</h2>
+  <h2 class="featured-title">Mexican Restaurants</h2>
   <div class="row mt-4 g-3">
 
     <!-- Card 1 -->
     <div class="col-md-4">
       <div class="restaurant-card">
-        <img src="{% static 'images/burger_walla.jpg' %}" alt="Burger Walla" class="card-bg-img">
+        <img src="{% static 'images/tijuana.jpg' %}" class="card-bg-img">
         <div class="card-overlay">
           <div class="card-top">
-            <span class="card-name">Burger Walla</span>
-            <span class="card-stars">No Ratings Yet</span>
+            <span class="card-name">Little Tijuana</span>
+            <span class="card-stars">No ratings yet</span>
           </div>
           <ul class="card-info">
-            <li>Indian Fusion</li>
-            <li>Burgers, Wraps</li>
-            <li>$$ </li>
+            <li>Mexican</li>
+            <li>Fresh Pupusas, Tamales, Chicarron</li>
+            <li>$$</li>
           </ul>
         </div>
       </div>
@@ -53,18 +28,18 @@
       </div>
     </div>
 
-    <!-- Card 2 -->
-    <div class="col-md-4">
+    <!-- Card 2-->
+     <div class="col-md-4">
       <div class="restaurant-card">
-        <img src="{% static 'images/intrinsic_cafe.jpg' %}" alt="Intrinsic Cafe" class="card-bg-img">
+        <img src="{% static 'images/tacobees.jpg' %}" class="card-bg-img">
         <div class="card-overlay">
           <div class="card-top">
-            <span class="card-name">Intrinsic Cafe</span>
-            <span class="card-stars">No Ratings Yet</span>
+            <span class="card-name">Tacobee's</span>
+            <span class="card-stars">No ratings yet</span>
           </div>
           <ul class="card-info">
-            <li>Vegan</li>
-            <li>Bowls, Smoothies</li>
+            <li>Mexican</li>
+            <li>Nachos, Quesadillas, Burritos</li>
             <li>$$</li>
           </ul>
         </div>
@@ -74,19 +49,22 @@
         <button class="btn btn-feedback" data-bs-toggle="modal" data-bs-target="#feedbackModal2">Feedback</button>
       </div>
     </div>
-
-    <!-- Card 3 -->
+     
+    
+    
+    
+    <!--Card 3 -->
     <div class="col-md-4">
       <div class="restaurant-card">
-        <img src="{% static 'images/fresh_coast.jpg' %}" alt="Fresh Coast" class="card-bg-img">
+        <img src="{% static 'images/mi_pequeno.jpg' %}" class="card-bg-img">
         <div class="card-overlay">
           <div class="card-top">
-            <span class="card-name">Fresh Coast Kitchen</span>
-            <span class="card-stars">No Ratings Yet</span>
+            <span class="card-name">Mi Pequeno Mexico</span>
+            <span class="card-stars">No ratings yet</span>
           </div>
           <ul class="card-info">
-            <li>Healthy</li>
-            <li>Bowls, Salads</li>
+            <li>Mexican</li>
+            <li>Birria Tacos, Chilaquiles, Mole Poblano</li>
             <li>$$</li>
           </ul>
         </div>
@@ -100,13 +78,14 @@
   </div>
 </section>
 
-
+<!-- Add Rate and Feedback modals here (same as homepage) -->
+ 
 <!-- Rate Modal 1 -->
 <div class="modal fade" id="rateModal1" tabindex="-1">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Rate Burger Walla</h5>
+        <h5 class="modal-title">Taqueria El Rinconcito</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body text-center">
@@ -128,7 +107,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Burger Walla Feedback</h5>
+        <h5 class="modal-title">Little Tijuana Feedback</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
@@ -145,7 +124,7 @@
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Rate Intrinsic Cafe</h5>
+        <h5 class="modal-title">Tacobee's</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body text-center">
@@ -167,7 +146,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Intrinsic Cafe Feedback</h5>
+        <h5 class="modal-title">Tacobee's Feedback</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
@@ -184,7 +163,7 @@
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Rate Fresh Coast Kitchen</h5>
+        <h5 class="modal-title">Mi Pequeno Mexico</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body text-center">
@@ -206,7 +185,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Fresh Coast Kitchen Feedback</h5>
+        <h5 class="modal-title">El Rancho Feedback</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
@@ -217,5 +196,6 @@
     </div>
   </div>
 </div>
+
 {% endblock %}
 
