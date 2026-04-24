@@ -27,5 +27,9 @@ urlpatterns = [
     path('mexican/', views.mexican, name='mexican'),
     path('indian/', views.indian, name='indian'),
     path('other/', views.other, name='other'),
+    path('showAll/', views.showAall, name='showAll'),
+    path('add-business/', views.add_business, name='add_business'),
+    path('promotions/', views.promotions, name='promotions'),
+    path('suggestions/', views.suggestions, name='suggestions'),
 ]
 

@@ -23,3 +23,15 @@ def indian(request):
 def other(request):
     return render(request, 'other.html')
 
+def showAall(request):
+    return render(request, 'showAll.html')
+
+def add_business(request):
+    return render(request, 'add_business.html')
+
+def promotions(request):
+    return render(request, 'promotions.html')
+
+def suggestions(request):
+    return render(request, 'suggestions.html')
+

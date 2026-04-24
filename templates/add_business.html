@@ -1,0 +1,45 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="login-box">
+        <h3 class="login-title">Add Your Business</h3>
+        <p style="color:#666; font-size:14px; text-align:center;">
+          Want your restaurant featured on PlatePal Newark?
+        </p>
+        <form method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label">Business Name</label>
+            <input type="text" class="form-control" name="name" placeholder="Enter business name">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Address</label>
+            <input type="text" class="form-control" name="address" placeholder="Enter address">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Cuisine Type</label>
+            <select class="form-control" name="cuisine">
+              <option>Italian</option>
+              <option>Mexican</option>
+              <option>Indian</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Contact Email</label>
+            <input type="email" class="form-control" name="email" placeholder="Enter contact email">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" name="description" rows="3" placeholder="Tell us about your business"></textarea>
+          </div>
+          <button type="submit" class="btn btn-login-submit w-100">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

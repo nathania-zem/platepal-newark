@@ -38,7 +38,7 @@
 
 <nav class="navbar navbar-expand-lg">
   <div class="container">
-    <a class="navbar-brand" href="#">PlatePal Newark</a>
+    <a class="navbar-brand" href="{% url 'home' %}">PlatePal Newark</a>
     <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
       <ul class="navbar-nav gap-3">
         <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
@@ -50,15 +50,15 @@
             <li><a class="dropdown-item" href="{% url 'indian' %}">Indian</a></li>
             <li><a class="dropdown-item" href="{% url 'other' %}">Other</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Show All</a></li>
+            <li><a class="dropdown-item" href="{% url 'showAll' %}">Show All</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Contact Us</a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Add Your Business</a></li>
-            <li><a class="dropdown-item" href="#">Promotions</a></li>
-            <li><a class="dropdown-item" href="#">Suggestions</a></li>
+            <li><a class="dropdown-item" href="{% url 'add_business' %}">Add Your Business</a></li>
+            <li><a class="dropdown-item" href="{% url 'promotions' %}">Promotions</a></li>
+            <li><a class="dropdown-item" href="{% url 'suggestions' %}">Suggestions</a></li>
           </ul>
         </li>
       </ul>
