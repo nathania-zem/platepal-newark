@@ -2,596 +2,320 @@
 {% load static %}
 {% block content %}
 
-<!--Italian row-->
-
+<!-- Italian -->
 <section class="container my-5">
   <h2 class="featured-title">Italian Restaurants</h2>
   <div class="row mt-4 g-3">
-
-    <!-- Card 1 -->
+    {% for restaurant in restaurants %}
+    {% if restaurant.cuisine == 'italian' %}
     <div class="col-md-4">
       <div class="restaurant-card">
-        <img src="{% static 'images/di_fara.jpg' %}" class="card-bg-img">
+        {% if restaurant.image %}<img src="{{ restaurant.image.url }}" class="card-bg-img">
+        {% else %}<img src="{% static 'images/di_fara.jpg' %}" class="card-bg-img">{% endif %}
         <div class="card-overlay">
           <div class="card-top">
-            <span class="card-name">Di Fara's Pizzeria</span>
-            <span class="card-stars">No ratings yet</span>
+            <span class="card-name">{{ restaurant.name }}</span>
+            <span class="card-stars">{% if restaurant.avg_rating %}{{ restaurant.avg_rating }} ★{% else %}No ratings yet{% endif %}</span>
           </div>
           <ul class="card-info">
             <li>Italian</li>
-            <li>Pizza, Pasta</li>
-            <li>$$</li>
+            <li>{{ restaurant.description }}</li>
+            <li>{{ restaurant.price_range }}</li>
           </ul>
         </div>
       </div>
       <div class="card-buttons mt-2">
-        <button class="btn btn-rate" data-bs-toggle="modal" data-bs-target="#rateModal1">Rate</button>
-        <button class="btn btn-feedback" data-bs-toggle="modal" data-bs-target="#feedbackModal1">Feedback</button>
+        <button class="btn btn-rate" data-bs-toggle="modal" data-bs-target="#rateModal{{ restaurant.pk }}">Rate</button>
+        <button class="btn btn-feedback" data-bs-toggle="modal" data-bs-target="#feedbackModal{{ restaurant.pk }}">Feedback</button>
       </div>
     </div>
-
-    <!-- Card 2-->
-     <div class="col-md-4">
-      <div class="restaurant-card">
-        <img src="{% static 'images/sbarros.jpg' %}" class="card-bg-img">
-        <div class="card-overlay">
-          <div class="card-top">
-            <span class="card-name">Sbarro's</span>
-            <span class="card-stars">No ratings yet</span>
+    <div class="modal fade" id="rateModal{{ restaurant.pk }}" tabindex="-1">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Rate {{ restaurant.name }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
-          <ul class="card-info">
-            <li>Italian</li>
-            <li>Pizza, Stromboli, Pasta</li>
-            <li>$$</li>
-          </ul>
+          <div class="modal-body text-center">
+            {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'submit_feedback' restaurant.pk %}">
+              {% csrf_token %}
+              <input type="hidden" name="comment" value="rated">
+              <div class="star-rating mb-3">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+              </div>
+              <input type="hidden" name="rating" class="rating-input" value="0">
+              <button type="submit" class="btn btn-rate mt-2 w-100">Submit Rating</button>
+            </form>
+            {% else %}<p>Please <a href="{% url 'login' %}">log in</a> to rate.</p>{% endif %}
+          </div>
         </div>
       </div>
-      <div class="card-buttons mt-2">
-        <button class="btn btn-rate" data-bs-toggle="modal" data-bs-target="#rateModal2">Rate</button>
-        <button class="btn btn-feedback" data-bs-toggle="modal" data-bs-target="#feedbackModal2">Feedback</button>
-      </div>
     </div>
-     
-    
-    
-    
-    <!--Card 3 -->
-    <div class="col-md-4">
-      <div class="restaurant-card">
-        <img src="{% static 'images/ellies.jpg' %}" class="card-bg-img">
-        <div class="card-overlay">
-          <div class="card-top">
-            <span class="card-name">Ellie's Bistro</span>
-            <span class="card-stars">No ratings yet</span>
+    <div class="modal fade" id="feedbackModal{{ restaurant.pk }}" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">{{ restaurant.name }} Feedback</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
-          <ul class="card-info">
-            <li>Italian</li>
-            <li>Pizza, Linguini, Desserts</li>
-            <li>$$</li>
-          </ul>
+          <div class="modal-body">
+            {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'submit_feedback' restaurant.pk %}">
+              {% csrf_token %}
+              <input type="hidden" name="rating" value="5">
+              <textarea class="form-control" rows="3" name="comment" placeholder="Leave your feedback here..."></textarea>
+              <button type="submit" class="btn btn-rate mt-2 w-100">Submit Feedback</button>
+            </form>
+            {% else %}<p>Please <a href="{% url 'login' %}">log in</a> to leave feedback.</p>{% endif %}
+          </div>
         </div>
       </div>
-      <div class="card-buttons mt-2">
-        <button class="btn btn-rate" data-bs-toggle="modal" data-bs-target="#rateModal3">Rate</button>
-        <button class="btn btn-feedback" data-bs-toggle="modal" data-bs-target="#feedbackModal3">Feedback</button>
-      </div>
     </div>
-
+    {% endif %}
+    {% endfor %}
   </div>
 </section>
 
-<!-- Add Rate and Feedback modals here (same as homepage) -->
- 
-<!-- Rate Modal 1 -->
-<div class="modal fade" id="rateModal1" tabindex="-1">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Dicara's Pizzeria</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body text-center">
-        <div class="star-rating">
-          <span class="star" data-value="1">★</span>
-          <span class="star" data-value="2">★</span>
-          <span class="star" data-value="3">★</span>
-          <span class="star" data-value="4">★</span>
-          <span class="star" data-value="5">★</span>
-        </div>
-        <button class="btn btn-rate mt-3 w-100">Submit Rating</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Feedback Modal 1 -->
-<div class="modal fade" id="feedbackModal1" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Di Fara's Pizzeria Feedback</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        
-        <textarea class="form-control" rows="3" placeholder="Leave your feedback here..."></textarea>
-        <button class="btn btn-rate mt-2 w-100">Submit Feedback</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Rate Modal 2 -->
-<div class="modal fade" id="rateModal2" tabindex="-1">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Sbarro's</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body text-center">
-        <div class="star-rating">
-          <span class="star" data-value="1">★</span>
-          <span class="star" data-value="2">★</span>
-          <span class="star" data-value="3">★</span>
-          <span class="star" data-value="4">★</span>
-          <span class="star" data-value="5">★</span>
-        </div>
-        <button class="btn btn-rate mt-3 w-100">Submit Rating</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Feedback Modal 2 -->
-<div class="modal fade" id="feedbackModal2" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Sbarro's Feedback</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        
-        <textarea class="form-control" rows="3" placeholder="Leave your feedback here..."></textarea>
-        <button class="btn btn-rate mt-2 w-100">Submit Feedback</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Rate Modal 3 -->
-<div class="modal fade" id="rateModal3" tabindex="-1">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Ellie's Bistro</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body text-center">
-        <div class="star-rating">
-          <span class="star" data-value="1">★</span>
-          <span class="star" data-value="2">★</span>
-          <span class="star" data-value="3">★</span>
-          <span class="star" data-value="4">★</span>
-          <span class="star" data-value="5">★</span>
-        </div>
-        <button class="btn btn-rate mt-3 w-100">Submit Rating</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Feedback Modal 3 -->
-<div class="modal fade" id="feedbackModal3" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Ellie's Bistro Feedback</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        
-        <textarea class="form-control" rows="3" placeholder="Leave your feedback here..."></textarea>
-        <button class="btn btn-rate mt-2 w-100">Submit Feedback</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!--Mexican Row-->
-
+<!-- Mexican -->
 <section class="container my-5">
   <h2 class="featured-title">Mexican Restaurants</h2>
   <div class="row mt-4 g-3">
-
-    <!-- Card 1 -->
+    {% for restaurant in restaurants %}
+    {% if restaurant.cuisine == 'mexican' %}
     <div class="col-md-4">
       <div class="restaurant-card">
-        <img src="{% static 'images/tijuana.jpg' %}" class="card-bg-img">
+        {% if restaurant.image %}<img src="{{ restaurant.image.url }}" class="card-bg-img">
+        {% else %}<img src="{% static 'images/tacobees.jpg' %}" class="card-bg-img">{% endif %}
         <div class="card-overlay">
           <div class="card-top">
-            <span class="card-name">Little Tijuana</span>
-            <span class="card-stars">No ratings yet</span>
+            <span class="card-name">{{ restaurant.name }}</span>
+            <span class="card-stars">{% if restaurant.avg_rating %}{{ restaurant.avg_rating }} ★{% else %}No ratings yet{% endif %}</span>
           </div>
           <ul class="card-info">
             <li>Mexican</li>
-            <li>Fresh Pupusas, Tamales, Chicarron</li>
-            <li>$$</li>
+            <li>{{ restaurant.description }}</li>
+            <li>{{ restaurant.price_range }}</li>
           </ul>
         </div>
       </div>
       <div class="card-buttons mt-2">
-        <button class="btn btn-rate" data-bs-toggle="modal" data-bs-target="#rateModal1">Rate</button>
-        <button class="btn btn-feedback" data-bs-toggle="modal" data-bs-target="#feedbackModal1">Feedback</button>
+        <button class="btn btn-rate" data-bs-toggle="modal" data-bs-target="#rateModal{{ restaurant.pk }}">Rate</button>
+        <button class="btn btn-feedback" data-bs-toggle="modal" data-bs-target="#feedbackModal{{ restaurant.pk }}">Feedback</button>
       </div>
     </div>
-
-    <!-- Card 2-->
-     <div class="col-md-4">
-      <div class="restaurant-card">
-        <img src="{% static 'images/tacobees.jpg' %}" class="card-bg-img">
-        <div class="card-overlay">
-          <div class="card-top">
-            <span class="card-name">Tacobee's</span>
-            <span class="card-stars">No ratings yet</span>
+    <div class="modal fade" id="rateModal{{ restaurant.pk }}" tabindex="-1">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Rate {{ restaurant.name }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
-          <ul class="card-info">
-            <li>Mexican</li>
-            <li>Nachos, Quesadillas, Burritos</li>
-            <li>$$</li>
-          </ul>
+          <div class="modal-body text-center">
+            {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'submit_feedback' restaurant.pk %}">
+              {% csrf_token %}
+              <input type="hidden" name="comment" value="rated">
+              <div class="star-rating mb-3">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+              </div>
+              <input type="hidden" name="rating" class="rating-input" value="0">
+              <button type="submit" class="btn btn-rate mt-2 w-100">Submit Rating</button>
+            </form>
+            {% else %}<p>Please <a href="{% url 'login' %}">log in</a> to rate.</p>{% endif %}
+          </div>
         </div>
       </div>
-      <div class="card-buttons mt-2">
-        <button class="btn btn-rate" data-bs-toggle="modal" data-bs-target="#rateModal2">Rate</button>
-        <button class="btn btn-feedback" data-bs-toggle="modal" data-bs-target="#feedbackModal2">Feedback</button>
-      </div>
     </div>
-     
-    
-    
-    
-    <!--Card 3 -->
-    <div class="col-md-4">
-      <div class="restaurant-card">
-        <img src="{% static 'images/mi_pequeno.jpg' %}" class="card-bg-img">
-        <div class="card-overlay">
-          <div class="card-top">
-            <span class="card-name">Mi Pequeno Mexico</span>
-            <span class="card-stars">No ratings yet</span>
+    <div class="modal fade" id="feedbackModal{{ restaurant.pk }}" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">{{ restaurant.name }} Feedback</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
-          <ul class="card-info">
-            <li>Mexican</li>
-            <li>Birria Tacos, Chilaquiles, Mole Poblano</li>
-            <li>$$</li>
-          </ul>
+          <div class="modal-body">
+            {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'submit_feedback' restaurant.pk %}">
+              {% csrf_token %}
+              <input type="hidden" name="rating" value="5">
+              <textarea class="form-control" rows="3" name="comment" placeholder="Leave your feedback here..."></textarea>
+              <button type="submit" class="btn btn-rate mt-2 w-100">Submit Feedback</button>
+            </form>
+            {% else %}<p>Please <a href="{% url 'login' %}">log in</a> to leave feedback.</p>{% endif %}
+          </div>
         </div>
       </div>
-      <div class="card-buttons mt-2">
-        <button class="btn btn-rate" data-bs-toggle="modal" data-bs-target="#rateModal3">Rate</button>
-        <button class="btn btn-feedback" data-bs-toggle="modal" data-bs-target="#feedbackModal3">Feedback</button>
-      </div>
     </div>
-
+    {% endif %}
+    {% endfor %}
   </div>
 </section>
 
-<!-- Add Rate and Feedback modals here (same as homepage) -->
- 
-<!-- Rate Modal 1 -->
-<div class="modal fade" id="rateModal1" tabindex="-1">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Taqueria El Rinconcito</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body text-center">
-        <div class="star-rating">
-          <span class="star" data-value="1">★</span>
-          <span class="star" data-value="2">★</span>
-          <span class="star" data-value="3">★</span>
-          <span class="star" data-value="4">★</span>
-          <span class="star" data-value="5">★</span>
-        </div>
-        <button class="btn btn-rate mt-3 w-100">Submit Rating</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Feedback Modal 1 -->
-<div class="modal fade" id="feedbackModal1" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Little Tijuana Feedback</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        
-        <textarea class="form-control" rows="3" placeholder="Leave your feedback here..."></textarea>
-        <button class="btn btn-rate mt-2 w-100">Submit Feedback</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Rate Modal 2 -->
-<div class="modal fade" id="rateModal2" tabindex="-1">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Tacobee's</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body text-center">
-        <div class="star-rating">
-          <span class="star" data-value="1">★</span>
-          <span class="star" data-value="2">★</span>
-          <span class="star" data-value="3">★</span>
-          <span class="star" data-value="4">★</span>
-          <span class="star" data-value="5">★</span>
-        </div>
-        <button class="btn btn-rate mt-3 w-100">Submit Rating</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Feedback Modal 2 -->
-<div class="modal fade" id="feedbackModal2" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Tacobee's Feedback</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        
-        <textarea class="form-control" rows="3" placeholder="Leave your feedback here..."></textarea>
-        <button class="btn btn-rate mt-2 w-100">Submit Feedback</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Rate Modal 3 -->
-<div class="modal fade" id="rateModal3" tabindex="-1">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Mi Pequeno Mexico</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body text-center">
-        <div class="star-rating">
-          <span class="star" data-value="1">★</span>
-          <span class="star" data-value="2">★</span>
-          <span class="star" data-value="3">★</span>
-          <span class="star" data-value="4">★</span>
-          <span class="star" data-value="5">★</span>
-        </div>
-        <button class="btn btn-rate mt-3 w-100">Submit Rating</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Feedback Modal 3 -->
-<div class="modal fade" id="feedbackModal3" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">El Rancho Feedback</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        
-        <textarea class="form-control" rows="3" placeholder="Leave your feedback here..."></textarea>
-        <button class="btn btn-rate mt-2 w-100">Submit Feedback</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!--Indian Row-->
+<!-- Indian -->
 <section class="container my-5">
   <h2 class="featured-title">Indian Restaurants</h2>
   <div class="row mt-4 g-3">
-
-    <!-- Card 1 -->
+    {% for restaurant in restaurants %}
+    {% if restaurant.cuisine == 'indian' %}
     <div class="col-md-4">
       <div class="restaurant-card">
-        <img src="{% static 'images/taste_of_india.jpg' %}" class="card-bg-img">
+        {% if restaurant.image %}<img src="{{ restaurant.image.url }}" class="card-bg-img">
+        {% else %}<img src="{% static 'images/taste_of_india.jpg' %}" class="card-bg-img">{% endif %}
         <div class="card-overlay">
           <div class="card-top">
-            <span class="card-name">Taste of India Newark</span>
-            <span class="card-stars">No ratings yet</span>
+            <span class="card-name">{{ restaurant.name }}</span>
+            <span class="card-stars">{% if restaurant.avg_rating %}{{ restaurant.avg_rating }} ★{% else %}No ratings yet{% endif %}</span>
           </div>
           <ul class="card-info">
             <li>Indian</li>
-            <li>Varied Dosas, Veggie Thali, Paneer Tikka</li>
-            <li>$$</li>
+            <li>{{ restaurant.description }}</li>
+            <li>{{ restaurant.price_range }}</li>
           </ul>
         </div>
       </div>
       <div class="card-buttons mt-2">
-        <button class="btn btn-rate" data-bs-toggle="modal" data-bs-target="#rateModal1">Rate</button>
-        <button class="btn btn-feedback" data-bs-toggle="modal" data-bs-target="#feedbackModal1">Feedback</button>
+        <button class="btn btn-rate" data-bs-toggle="modal" data-bs-target="#rateModal{{ restaurant.pk }}">Rate</button>
+        <button class="btn btn-feedback" data-bs-toggle="modal" data-bs-target="#feedbackModal{{ restaurant.pk }}">Feedback</button>
       </div>
     </div>
-
-    <!-- Card 2-->
-     <div class="col-md-4">
-      <div class="restaurant-card">
-        <img src="{% static 'images/maharaja.jpg' %}" class="card-bg-img">
-        <div class="card-overlay">
-          <div class="card-top">
-            <span class="card-name">Maharaja Indian Restaurant</span>
-            <span class="card-stars">No ratings yet</span>
+    <div class="modal fade" id="rateModal{{ restaurant.pk }}" tabindex="-1">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Rate {{ restaurant.name }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
-          <ul class="card-info">
-            <li>Indian</li>
-            <li>Tandoori Specialties, Curries & Gravies, Vegetarian Delights</li>
-            <li>$$</li>
-          </ul>
+          <div class="modal-body text-center">
+            {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'submit_feedback' restaurant.pk %}">
+              {% csrf_token %}
+              <input type="hidden" name="comment" value="rated">
+              <div class="star-rating mb-3">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+              </div>
+              <input type="hidden" name="rating" class="rating-input" value="0">
+              <button type="submit" class="btn btn-rate mt-2 w-100">Submit Rating</button>
+            </form>
+            {% else %}<p>Please <a href="{% url 'login' %}">log in</a> to rate.</p>{% endif %}
+          </div>
         </div>
       </div>
-      <div class="card-buttons mt-2">
-        <button class="btn btn-rate" data-bs-toggle="modal" data-bs-target="#rateModal2">Rate</button>
-        <button class="btn btn-feedback" data-bs-toggle="modal" data-bs-target="#feedbackModal2">Feedback</button>
-      </div>
     </div>
-     
-    
-    
-    
-    <!--Card 3 -->
-    <div class="col-md-4">
-      <div class="restaurant-card">
-        <img src="{% static 'images/curry_house.jpg' %}" class="card-bg-img">
-        <div class="card-overlay">
-          <div class="card-top">
-            <span class="card-name">Curry House Newark</span>
-            <span class="card-stars">No ratings yet</span>
+    <div class="modal fade" id="feedbackModal{{ restaurant.pk }}" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">{{ restaurant.name }} Feedback</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
-          <ul class="card-info">
-            <li>Indian</li>
-            <li>Chicken Tikka Masala, Paneer Tikka, Lasuni Gobi</li>
-            <li>$$</li>
-          </ul>
+          <div class="modal-body">
+            {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'submit_feedback' restaurant.pk %}">
+              {% csrf_token %}
+              <input type="hidden" name="rating" value="5">
+              <textarea class="form-control" rows="3" name="comment" placeholder="Leave your feedback here..."></textarea>
+              <button type="submit" class="btn btn-rate mt-2 w-100">Submit Feedback</button>
+            </form>
+            {% else %}<p>Please <a href="{% url 'login' %}">log in</a> to leave feedback.</p>{% endif %}
+          </div>
         </div>
       </div>
-      <div class="card-buttons mt-2">
-        <button class="btn btn-rate" data-bs-toggle="modal" data-bs-target="#rateModal3">Rate</button>
-        <button class="btn btn-feedback" data-bs-toggle="modal" data-bs-target="#feedbackModal3">Feedback</button>
-      </div>
     </div>
-
+    {% endif %}
+    {% endfor %}
   </div>
 </section>
 
-<!-- Add Rate and Feedback modals here (same as homepage) -->
- 
-<!-- Rate Modal 1 -->
-<div class="modal fade" id="rateModal1" tabindex="-1">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Taste of India Newark</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body text-center">
-        <div class="star-rating">
-          <span class="star" data-value="1">★</span>
-          <span class="star" data-value="2">★</span>
-          <span class="star" data-value="3">★</span>
-          <span class="star" data-value="4">★</span>
-          <span class="star" data-value="5">★</span>
+<!-- Other -->
+<section class="container my-5">
+  <h2 class="featured-title">Other Restaurants</h2>
+  <div class="row mt-4 g-3">
+    {% for restaurant in restaurants %}
+    {% if restaurant.cuisine == 'other' %}
+    <div class="col-md-4">
+      <div class="restaurant-card">
+        {% if restaurant.image %}<img src="{{ restaurant.image.url }}" class="card-bg-img">
+        {% else %}<img src="{% static 'images/burger_walla.jpg' %}" class="card-bg-img">{% endif %}
+        <div class="card-overlay">
+          <div class="card-top">
+            <span class="card-name">{{ restaurant.name }}</span>
+            <span class="card-stars">{% if restaurant.avg_rating %}{{ restaurant.avg_rating }} ★{% else %}No ratings yet{% endif %}</span>
+          </div>
+          <ul class="card-info">
+            <li>Other</li>
+            <li>{{ restaurant.description }}</li>
+            <li>{{ restaurant.price_range }}</li>
+          </ul>
         </div>
-        <button class="btn btn-rate mt-3 w-100">Submit Rating</button>
+      </div>
+      <div class="card-buttons mt-2">
+        <button class="btn btn-rate" data-bs-toggle="modal" data-bs-target="#rateModal{{ restaurant.pk }}">Rate</button>
+        <button class="btn btn-feedback" data-bs-toggle="modal" data-bs-target="#feedbackModal{{ restaurant.pk }}">Feedback</button>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- Feedback Modal 1 -->
-<div class="modal fade" id="feedbackModal1" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Taste of India Newark Feedback</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        
-        <textarea class="form-control" rows="3" placeholder="Leave your feedback here..."></textarea>
-        <button class="btn btn-rate mt-2 w-100">Submit Feedback</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Rate Modal 2 -->
-<div class="modal fade" id="rateModal2" tabindex="-1">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Maharaja Indian Restaurant</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body text-center">
-        <div class="star-rating">
-          <span class="star" data-value="1">★</span>
-          <span class="star" data-value="2">★</span>
-          <span class="star" data-value="3">★</span>
-          <span class="star" data-value="4">★</span>
-          <span class="star" data-value="5">★</span>
+    <div class="modal fade" id="rateModal{{ restaurant.pk }}" tabindex="-1">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Rate {{ restaurant.name }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body text-center">
+            {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'submit_feedback' restaurant.pk %}">
+              {% csrf_token %}
+              <input type="hidden" name="comment" value="rated">
+              <div class="star-rating mb-3">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+              </div>
+              <input type="hidden" name="rating" class="rating-input" value="0">
+              <button type="submit" class="btn btn-rate mt-2 w-100">Submit Rating</button>
+            </form>
+            {% else %}<p>Please <a href="{% url 'login' %}">log in</a> to rate.</p>{% endif %}
+          </div>
         </div>
-        <button class="btn btn-rate mt-3 w-100">Submit Rating</button>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- Feedback Modal 2 -->
-<div class="modal fade" id="feedbackModal2" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Maharaja Indian Restaurant Feedback</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        
-        <textarea class="form-control" rows="3" placeholder="Leave your feedback here..."></textarea>
-        <button class="btn btn-rate mt-2 w-100">Submit Feedback</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Rate Modal 3 -->
-<div class="modal fade" id="rateModal3" tabindex="-1">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Curry House Newark</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body text-center">
-        <div class="star-rating">
-          <span class="star" data-value="1">★</span>
-          <span class="star" data-value="2">★</span>
-          <span class="star" data-value="3">★</span>
-          <span class="star" data-value="4">★</span>
-          <span class="star" data-value="5">★</span>
+    <div class="modal fade" id="feedbackModal{{ restaurant.pk }}" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">{{ restaurant.name }} Feedback</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'submit_feedback' restaurant.pk %}">
+              {% csrf_token %}
+              <input type="hidden" name="rating" value="5">
+              <textarea class="form-control" rows="3" name="comment" placeholder="Leave your feedback here..."></textarea>
+              <button type="submit" class="btn btn-rate mt-2 w-100">Submit Feedback</button>
+            </form>
+            {% else %}<p>Please <a href="{% url 'login' %}">log in</a> to leave feedback.</p>{% endif %}
+          </div>
         </div>
-        <button class="btn btn-rate mt-3 w-100">Submit Rating</button>
       </div>
     </div>
+    {% endif %}
+    {% endfor %}
   </div>
-</div>
-
-<!-- Feedback Modal 3 -->
-<div class="modal fade" id="feedbackModal3" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Curry House Newark Feedback</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        
-        <textarea class="form-control" rows="3" placeholder="Leave your feedback here..."></textarea>
-        <button class="btn btn-rate mt-2 w-100">Submit Feedback</button>
-      </div>
-    </div>
-  </div>
-</div>
+</section>
 
 {% endblock %}

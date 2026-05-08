@@ -1,29 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
-
 <div class="container my-5">
   <div class="row justify-content-center">
     <div class="col-md-4">
       <div class="login-box">
         <h3 class="login-title">Login</h3>
-        <form>
+        {% if error %}
+          <p style="color:red; font-size:14px; text-align:center;">{{ error }}</p>
+        {% endif %}
+        <form method="POST">
           {% csrf_token %}
           <div class="mb-3">
             <label class="form-label">Username</label>
-            <input type="text" class="form-control" placeholder="Enter username">
+            <input type="text" class="form-control" name="username" placeholder="Enter username">
           </div>
           <div class="mb-3">
             <label class="form-label">Password</label>
-            <input type="password" class="form-control" placeholder="Enter password">
+            <input type="password" class="form-control" name="password" placeholder="Enter password">
           </div>
           <button type="submit" class="btn btn-login-submit w-100">Login</button>
         </form>
-        <p class="mt-3 text-center" style="font-size: 14px;">
+        <p class="mt-3 text-center" style="font-size:14px;">
           Don't have an account? <a href="{% url 'register' %}">Register here</a>
         </p>
       </div>
     </div>
   </div>
 </div>
-
 {% endblock %}

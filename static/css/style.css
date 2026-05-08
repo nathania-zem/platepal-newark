@@ -79,7 +79,8 @@
 
 .card-stars {
     color: gold;
-    font-size: 13px;
+    font-size: 17px;
+    font-weight: bold;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
 }
 
@@ -174,3 +175,9 @@
     color: white;
 }
 
+.card-stars {
+    color: gold !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8) !important;
+}

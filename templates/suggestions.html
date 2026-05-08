@@ -5,17 +5,19 @@
     <div class="col-md-6">
       <div class="login-box">
         <h3 class="login-title">Suggestions</h3>
-        <p style="color:#666; font-size:14px; text-align:center;">
-          Have an idea to improve PlatePal Newark? Let us know.
-        </p>
+        <p style="color:#666; font-size:14px; text-align:center;">Have an idea to improve PlatePal Newark? Let us know.</p>
+        {% if success %}
+          <p style="color:green; text-align:center; font-weight:bold;">Thanks for your suggestion!</p>
+        {% else %}
         <form method="POST">
           {% csrf_token %}
           <div class="mb-3">
-            <label class="form-label">Your Suggestions</label>
+            <label class="form-label">Your Suggestion</label>
             <textarea class="form-control" name="suggestion" rows="5" placeholder="Share your suggestion here..."></textarea>
           </div>
           <button type="submit" class="btn btn-login-submit w-100">Submit</button>
         </form>
+        {% endif %}
       </div>
     </div>
   </div>

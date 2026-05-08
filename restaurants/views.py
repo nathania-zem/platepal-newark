@@ -24,6 +24,9 @@ def indian(request):
 def other(request):
     restaurants = Restaurant.objects.filter(cuisine='other')
     return render(request, 'other.html', {'restaurants': restaurants})
+def showAll(request):
+    restaurants = Restaurant.objects.all()  
+    return render(request, 'showAll.html', {'restaurants': restaurants})
 
 @login_required
 def submit_feedback(request, pk):
@@ -38,6 +41,7 @@ def submit_feedback(request, pk):
     return redirect('home')
 
 def login_view(request):
+    error = None
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -47,7 +51,9 @@ def login_view(request):
             if user.is_staff:
                 return redirect('/admin')
             return redirect('home')
-    return render(request, 'login.html')
+        else:
+            error = 'Invalid username or password.'
+    return render(request, 'login.html', {'error': error})
 
 def logout_view(request):
     logout(request)
